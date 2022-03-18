@@ -1,0 +1,1 @@
+export const currencies = ['USD', 'INR', 'AUD', 'SGD', 'GBP', 'JPY'];
