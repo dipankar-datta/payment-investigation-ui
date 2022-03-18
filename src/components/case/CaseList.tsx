@@ -43,7 +43,7 @@ const caseListColumns = [
     id: "inquiryId",
     label: "Inquiry ID",
     minWidth: 100,
-    format: (value: any) => value?.id,
+    format: (value: any) => value?.inquiryId,
     valuePath: "inquiryId",
   },
   {
@@ -176,10 +176,5 @@ const actions = {
 const mapDispatchToProps = (dispatch: any) => {
   return {actions: bindActionCreators(actions, dispatch)};
 }
-// const mapDispatchToProps = (dispatch: any) => {
-//   return {
-//     setCaseList: (caseList: any) => dispatch(setCaseList(caseList))
-//   }
-// }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CaseList)

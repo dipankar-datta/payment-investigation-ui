@@ -6,15 +6,15 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { DatePicker, LocalizationProvider } from "@mui/lab";
 import { useNavigate, useParams } from "react-router-dom";
 import { currencies } from "../../util/configurations";
-import { CaseListMockData } from "../../util/mock-data";
 import axios from "axios";
 import { SAVE_CASE_URL } from "../../util/endpoints";
+import { connect } from "react-redux";
 
-export const CaseFormRoutHandler = () => {
+const CaseFormRoutHandler = (props: any) => {
   const params = useParams();
   const navigate = useNavigate();
-  const caseRecord = CaseListMockData.find(
-    (caseItem: any) => caseItem.caseNumber === Number(params.caseNumber)
+  const caseRecord = props.caseList.find(
+    (caseItem: any) => caseItem.caseNumber === params.caseNumber
   );
   if (params.caseNumber && caseRecord) {
     return <CaseForm caseItem={caseRecord} />;
@@ -25,6 +25,15 @@ export const CaseFormRoutHandler = () => {
 
   return <></>;
 };
+
+const mapStateToProps = (state: any): any => {
+  return {
+    caseList: state.case.list
+  }
+}
+
+export const CaseFormRoutHandlerConnected = connect(mapStateToProps,null)(CaseFormRoutHandler);
+
 
 export default function CaseForm(caseFormProps: any) {
   const navigate = useNavigate();
