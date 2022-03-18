@@ -1,25 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ComponentNone from "./components/ComponentNone";
+import { Case } from "./components/case/Case";
+import { Header } from "./components/Header";
+import CaseForm, { CaseFormRoutHandler } from "./components/case/CaseForm";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path="/cases" element={<Case />} />
+        <Route path="/cases/new" element={<CaseForm />} />
+        <Route path="/cases/:caseNumber" element={<CaseFormRoutHandler />} />
+        <Route path="*" element={<ComponentNone />} />
+        <Route path="/" element={<Case />}></Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
