@@ -92,7 +92,7 @@ const CaseList = (props: any) => {
       .catch((error: AxiosError) => {
         console.error("Error while fetching case list: ", error);
       });
-  }, []);
+  });
 
   const handleChangePage = (event: any, newPage: any) => {
     setPage(newPage);
