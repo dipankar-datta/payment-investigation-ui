@@ -59,9 +59,6 @@ export default function CaseForm(caseFormProps: any) {
     setCaseState({ ...caseState, ...data });
   };
 
-  React.useEffect(() => {
-    console.log('Case State: ', caseState);
-  })
 
   return (
     <Box

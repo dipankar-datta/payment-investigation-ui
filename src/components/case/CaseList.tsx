@@ -55,7 +55,7 @@ const caseListColumns = [
   },
   {
     id: "inquirerAddress",
-    label: "inquirer Address",
+    label: "Inquirer Address",
     minWidth: 100,
     format: (value: any) => value?.inquirerAddress,
     valuePath: "inquirerAddress",
