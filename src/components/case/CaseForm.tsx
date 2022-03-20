@@ -5,11 +5,9 @@ import { Button, MenuItem } from "@mui/material";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { DatePicker, LocalizationProvider } from "@mui/lab";
 import { useNavigate, useParams } from "react-router-dom";
-import { currencies } from "../../util/configurations";
 import axios from "axios";
 import { SAVE_CASE_URL } from "../../util/endpoints";
 import { connect } from "react-redux";
-import { setCaseList } from "../../redux/actions";
 
 const CaseFormRoutHandler = (props: any) => {
   const params = useParams();
@@ -78,7 +76,6 @@ function CaseForm(caseFormProps: any) {
         <span
           style={{
             textAlign: "right",
-            marginRight: "20px",
             float: "right",
           }}
         >
@@ -91,7 +88,7 @@ function CaseForm(caseFormProps: any) {
           </Button>
         </span>
         <span>
-          <h2 style={{ marginLeft: "10px" }}>Case Details</h2>
+          <h2>Case Details</h2>
         </span>
       </div>
 
