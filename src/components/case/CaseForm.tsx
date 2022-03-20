@@ -9,6 +9,7 @@ import { currencies } from "../../util/configurations";
 import axios from "axios";
 import { SAVE_CASE_URL } from "../../util/endpoints";
 import { connect } from "react-redux";
+import { setCaseList } from "../../redux/actions";
 
 const CaseFormRoutHandler = (props: any) => {
   const params = useParams();
@@ -17,7 +18,9 @@ const CaseFormRoutHandler = (props: any) => {
     (caseItem: any) => caseItem.caseNumber === params.caseNumber
   );
   if (params.caseNumber && caseRecord) {
-    return <CaseForm caseItem={caseRecord} />;
+    return (
+      <CaseForm caseItem={caseRecord} configurations={props.configurations} />
+    );
   } else {
     alert("Invalid Case Number");
     navigate("/cases");
@@ -26,39 +29,41 @@ const CaseFormRoutHandler = (props: any) => {
   return <></>;
 };
 
-const mapStateToProps = (state: any): any => {
+const mapStateToPropsCaseFormRoutHandler = (state: any): any => {
   return {
-    caseList: state.case.list
-  }
-}
+    caseList: state.case.list,
+    configurations: state.configurations.staticConfigurations,
+  };
+};
 
-export const CaseFormRoutHandlerConnected = connect(mapStateToProps,null)(CaseFormRoutHandler);
+export const CaseFormRoutHandlerConnected = connect(
+  mapStateToPropsCaseFormRoutHandler,
+  null
+)(CaseFormRoutHandler);
 
-
-export default function CaseForm(caseFormProps: any) {
+function CaseForm(caseFormProps: any) {
   const navigate = useNavigate();
-  const [caseState, setCaseState] = React.useState(caseFormProps.caseItem || {});
+  const [caseState, setCaseState] = React.useState(
+    caseFormProps.caseItem || {}
+  );
 
   const submitHandler = () => {
-    axios.post(SAVE_CASE_URL, caseState)
-    .then((res: any) => {
-      console.log('Successfully Case Saved: ', res.data);
-      alert("Successfully saved case");
-      navigate("/cases");
-    })
-    .catch(error => {
-      alert("Error while saving case");
-      console.error("Error while saving case: ", error)
-    });
-
-    
-    
+    axios
+      .post(SAVE_CASE_URL, caseState)
+      .then((res: any) => {
+        console.log("Successfully Case Saved: ", res.data);
+        alert("Successfully saved case");
+        navigate("/cases");
+      })
+      .catch((error) => {
+        alert("Error while saving case");
+        console.error("Error while saving case: ", error);
+      });
   };
 
   const updateCase = (data: any) => {
     setCaseState({ ...caseState, ...data });
   };
-
 
   return (
     <Box
@@ -74,10 +79,14 @@ export default function CaseForm(caseFormProps: any) {
           style={{
             textAlign: "right",
             marginRight: "20px",
-            float: 'right'
+            float: "right",
           }}
         >
-          <Button onClick={e => navigate("/cases")} variant="outlined" size="medium">
+          <Button
+            onClick={(e) => navigate("/cases")}
+            variant="outlined"
+            size="medium"
+          >
             Back to Cases
           </Button>
         </span>
@@ -99,22 +108,32 @@ export default function CaseForm(caseFormProps: any) {
           id="bank"
           label="Bank"
           size="small"
+          select
           defaultValue={caseState.bank}
-        />
+        >
+          {caseFormProps.configurations.bank.map(buildMenuItems)}
+        </TextField>
+
         <TextField
           onChange={(e: any) => updateCase({ branch: e.target.value })}
           id="branch"
           label="Branch"
           size="small"
+          select
           defaultValue={caseState.branch}
-        />
+        >
+          {caseFormProps.configurations.branch.map(buildMenuItems)}
+        </TextField>
         <TextField
           onChange={(e: any) => updateCase({ inquiryId: e.target.value })}
           id="inquiryId"
           label="Inquiry ID"
           size="small"
           defaultValue={caseState.inquiryId}
-        />
+          select
+        >
+          {caseFormProps.configurations.inquiry_id.map(buildMenuItems)}
+        </TextField>
         <TextField
           onChange={(e: any) => updateCase({ inquirerName: e.target.value })}
           id="inquirerName"
@@ -133,7 +152,7 @@ export default function CaseForm(caseFormProps: any) {
           <DatePicker
             label="Inquiry Date"
             value={caseState.inquiryDate || null}
-            onChange={newValue => {
+            onChange={(newValue) => {
               updateCase({ inquiryDate: newValue });
             }}
             renderInput={(params) => (
@@ -154,9 +173,12 @@ export default function CaseForm(caseFormProps: any) {
           id="assignedTo"
           label="Assigned To"
           size="small"
+          select
           value={caseState.assignedTo}
           onChange={(e: any) => updateCase({ assignedTo: e.target.value })}
-        />
+        >
+          {caseFormProps.configurations.assign_to.map(buildMenuItems)}
+        </TextField>
         <TextField
           id="inquiryRef"
           label="Inquiry Ref"
@@ -170,7 +192,10 @@ export default function CaseForm(caseFormProps: any) {
           size="small"
           value={caseState.status}
           onChange={(e: any) => updateCase({ status: e.target.value })}
-        />
+          select
+        >
+          {caseFormProps.configurations.status.map(buildMenuItems)}
+        </TextField>
         <TextField
           id="investigationType"
           label="Investigation Type"
@@ -179,16 +204,20 @@ export default function CaseForm(caseFormProps: any) {
           onChange={(e: any) =>
             updateCase({ investigationType: e.target.value })
           }
-        />
+          select
+        >
+          {caseFormProps.configurations.investigation_type.map(buildMenuItems)}
+        </TextField>
         <TextField
           id="priority"
           label="Priority"
           size="small"
           value={caseState.priority}
-          onChange={(e: any) =>
-            updateCase({ priority: e.target.value })
-          }
-        />
+          onChange={(e: any) => updateCase({ priority: e.target.value })}
+          select
+        >
+          {caseFormProps.configurations.priority.map(buildMenuItems)}
+        </TextField>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
             label="Close Date"
@@ -228,11 +257,7 @@ export default function CaseForm(caseFormProps: any) {
           onChange={(e: any) => updateCase({ eqCurrency: e.target.value })}
           size="small"
         >
-          {currencies.map((option) => (
-            <MenuItem key={option} value={option}>
-              {option}
-            </MenuItem>
-          ))}
+          {caseFormProps.configurations.eq_currency.map(buildMenuItems)}
         </TextField>
         <TextField
           id="currency"
@@ -242,11 +267,7 @@ export default function CaseForm(caseFormProps: any) {
           onChange={(e: any) => updateCase({ currency: e.target.value })}
           size="small"
         >
-          {currencies.map((option) => (
-            <MenuItem key={option} value={option}>
-              {option}
-            </MenuItem>
-          ))}
+          {caseFormProps.configurations.currency.map(buildMenuItems)}
         </TextField>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
@@ -290,20 +311,26 @@ export default function CaseForm(caseFormProps: any) {
         />
         <TextField
           id="paidReceivedIndicator"
-          onChange={(e: any) => updateCase({ paidReceivedIndicator: e.target.value })}
+          onChange={(e: any) =>
+            updateCase({ paidReceivedIndicator: e.target.value })
+          }
           label="Paid Recieved Indicator"
           size="small"
           value={caseState.paidReceivedIndicator}
         />
         <TextField
           id="originalInstructionRef"
-          onChange={(e: any) => updateCase({ originalInstructionRef: e.target.value })}
+          onChange={(e: any) =>
+            updateCase({ originalInstructionRef: e.target.value })
+          }
           label="Original Instruction Ref"
           size="small"
           value={caseState.originalInstructionRef}
         />
         <TextField
-          onChange={(e: any) => updateCase({ orderingInstAddress: e.target.value })}
+          onChange={(e: any) =>
+            updateCase({ orderingInstAddress: e.target.value })
+          }
           id="orderingInstAddress"
           label="Ordering Inst Address"
           size="small"
@@ -313,7 +340,9 @@ export default function CaseForm(caseFormProps: any) {
         />
         <TextField
           id="orderingCustAddress"
-          onChange={(e: any) => updateCase({ orderingCustAddress: e.target.value })}
+          onChange={(e: any) =>
+            updateCase({ orderingCustAddress: e.target.value })
+          }
           label="Ordering Cust Address"
           size="small"
           value={caseState.orderingCustAddress}
@@ -327,21 +356,27 @@ export default function CaseForm(caseFormProps: any) {
         />
         <TextField
           id="orderingCustType"
-          onChange={(e: any) => updateCase({ orderingCustType: e.target.value })}
+          onChange={(e: any) =>
+            updateCase({ orderingCustType: e.target.value })
+          }
           label="Ordering Cust Type"
           size="small"
           value={caseState.orderingCustType}
         />
         <TextField
           id="orderingCustName"
-          onChange={(e: any) => updateCase({ orderingCustName: e.target.value })}
+          onChange={(e: any) =>
+            updateCase({ orderingCustName: e.target.value })
+          }
           label="Ordering Cust Name"
           size="small"
           value={caseState.orderingCustName}
         />
         <TextField
           id="beneficiaryAddress"
-          onChange={(e: any) => updateCase({ beneficiaryAddress: e.target.value })}
+          onChange={(e: any) =>
+            updateCase({ beneficiaryAddress: e.target.value })
+          }
           label="Beneficiary Address"
           size="small"
           value={caseState.beneficiaryAddress}
@@ -382,14 +417,12 @@ export default function CaseForm(caseFormProps: any) {
           onChange={(e: any) => updateCase({ instructedCcy: e.target.value })}
           size="small"
         >
-          {currencies.map((option) => (
-            <MenuItem key={option} value={option}>
-              {option}
-            </MenuItem>
-          ))}
+          {caseFormProps.configurations.instructed_currency.map(buildMenuItems)}
         </TextField>
         <TextField
-          onChange={(e: any) => updateCase({ receivingInstAddress: e.target.value })}
+          onChange={(e: any) =>
+            updateCase({ receivingInstAddress: e.target.value })
+          }
           id="receivingInstAddress"
           label="Receiving Inst Address"
           size="small"
@@ -403,35 +436,65 @@ export default function CaseForm(caseFormProps: any) {
           label="Receiving Inst ID"
           size="small"
           value={caseState.receivingInstId}
-        />
+          select
+        >
+          {caseFormProps.configurations.receiving_inst_id.map(buildMenuItems)}
+        </TextField>
         <TextField
           id="receivingInstType"
-          onChange={(e: any) => updateCase({ receivingInstType: e.target.value })}
+          onChange={(e: any) =>
+            updateCase({ receivingInstType: e.target.value })
+          }
           label="Receiving Inst Type"
           size="small"
           value={caseState.receivingInstType}
-        />
+          select
+        >
+          {caseFormProps.configurations.receiving_inst_type.map(buildMenuItems)}
+        </TextField>
         <TextField
           id="receivingInstName"
-          onChange={(e: any) => updateCase({ receivingInstName: e.target.value })}
+          onChange={(e: any) =>
+            updateCase({ receivingInstName: e.target.value })
+          }
           label="Receiving Inst Name"
           size="small"
           value={caseState.receivingInstName}
         />
+        <TextField
+          id="sendingInstAddress"
+          onChange={(e: any) =>
+            updateCase({ sendingInstAddress: e.target.value })
+          }
+          label="Sending Inst Address"
+          size="small"
+          value={caseState.sendingInstAddress}
+          select
+        >
+          {caseFormProps.configurations.sending_inst_address.map(
+            buildMenuItems
+          )}
+        </TextField>
         <TextField
           id="sendingInstId"
           onChange={(e: any) => updateCase({ sendingInstId: e.target.value })}
           label="Sending Inst ID"
           size="small"
           value={caseState.sendingInstId}
-        />
+          select
+        >
+          {caseFormProps.configurations.sending_inst_id.map(buildMenuItems)}
+        </TextField>
         <TextField
           id="sendingInstType"
           onChange={(e: any) => updateCase({ sendingInstType: e.target.value })}
           label="Sending Inst Type"
           size="small"
           value={caseState.sendingInstType}
-        />
+          select
+        >
+          {caseFormProps.configurations.sending_inst_type.map(buildMenuItems)}
+        </TextField>
         <TextField
           id="sendingInstName"
           onChange={(e: any) => updateCase({ sendingInstName: e.target.value })}
@@ -439,6 +502,7 @@ export default function CaseForm(caseFormProps: any) {
           size="small"
           value={caseState.sendingInstName}
         />
+
         <TextField
           id="defaultCurrency"
           select
@@ -447,11 +511,7 @@ export default function CaseForm(caseFormProps: any) {
           onChange={(e: any) => updateCase({ defaultCurrency: e.target.value })}
           size="small"
         >
-          {currencies.map((option) => (
-            <MenuItem key={option} value={option}>
-              {option}
-            </MenuItem>
-          ))}
+          {caseFormProps.configurations.default_currency.map(buildMenuItems)}
         </TextField>
         <div
           style={{
@@ -468,3 +528,22 @@ export default function CaseForm(caseFormProps: any) {
     </Box>
   );
 }
+
+const mapStateToPropsCaseForm = (state: any): any => {
+  return {
+    configurations: state.configurations.staticConfigurations,
+  };
+};
+
+export const CaseFormConnected = connect(
+  mapStateToPropsCaseForm,
+  null
+)(CaseForm);
+
+const buildMenuItems = (option: any) => {
+  return (
+    <MenuItem key={option.fieldKey} value={option.fieldValue}>
+      {option.fieldValue}
+    </MenuItem>
+  );
+};

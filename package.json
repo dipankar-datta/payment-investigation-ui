@@ -54,6 +54,5 @@
   "devDependencies": {
     "@types/jquery": "^3.5.14",
     "@types/lodash": "^4.14.179"
-  },
-  "proxy": "http://localhost:8080"
+  }
 }

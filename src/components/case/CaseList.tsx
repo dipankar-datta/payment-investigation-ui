@@ -9,12 +9,13 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import * as _ from "lodash";
 import { useNavigate } from "react-router-dom";
-import axios, { AxiosError, AxiosResponse } from "axios";
+
 import { setCaseList } from "../../redux/actions";
 import { connect } from "react-redux";
-import { GET_CASE_LIST_URL } from "../../util/endpoints";
-import { bindActionCreators } from "redux";
+
 import { parseDate } from "../../util/common-functions";
+import { loadCaseList } from "../../util/api-calls";
+import { bindActionCreators } from "redux";
 
 const caseListColumns = [
   {
@@ -82,17 +83,13 @@ const CaseList = (props: any) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    axios
-      .get(GET_CASE_LIST_URL)
-      .then((res: AxiosResponse) => {
-        props.actions.setCaseList(res.data);
-      })
-      .catch((error: AxiosError) => {
-        console.error("Error while fetching case list: ", error);
-      });
-  });
+  let mounted = true;
+  useEffect(() => {    
+    if (mounted) {
+      loadCaseList(props.actions.setCaseList);
+    }
+    mounted = false;
+  }, []);
 
   const handleChangePage = (event: any, newPage: any) => {
     setPage(newPage);
