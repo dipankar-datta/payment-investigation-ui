@@ -5,7 +5,7 @@ const ariaLabel = { "aria-label": "description" };
 
 export const PayQueryForm = (props: any) => {
   return (
-    <div style={{ width: "500px", display: "inline-table"}}>
+    <div style={{ maxWidth: "500px", margin: "auto"}}>
       <div style={{ width: "80%", float: "left" }}>
         <TextField
           placeholder="Please enter Sender reference Number "
