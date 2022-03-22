@@ -102,7 +102,7 @@ const CaseList = (props: any) => {
 
   const handleCaseSelection = (column: any, row: any) => {
     if (column.id === "caseNumber" && row) {
-      navigate(`/cases/${row.caseNumber}`);
+      navigate(`/cases/${row.id}`);
     }
   };
 

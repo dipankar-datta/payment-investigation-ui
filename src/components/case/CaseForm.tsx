@@ -1,27 +1,57 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Button, MenuItem } from "@mui/material";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { DatePicker, LocalizationProvider } from "@mui/lab";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
-import { SAVE_CASE_URL } from "../../util/endpoints";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { GET_CASE_URL, SAVE_CASE_URL } from "../../util/endpoints";
 import { connect } from "react-redux";
+import * as _ from "lodash";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const CaseFormRoutHandler = (props: any) => {
   const params = useParams();
   const navigate = useNavigate();
-  const caseRecord = props.caseList.find(
-    (caseItem: any) => caseItem.caseNumber === params.caseNumber
+  let caseRecordFound = props.caseList.find(
+    (caseItem: any) => String(caseItem.id) === params.id
   );
-  if (params.caseNumber && caseRecord) {
+  const [caseRecord, setCaseRecord]: any = useState(caseRecordFound);
+  const [status, setStatus]: any = React.useState("loading");
+
+  useEffect(() => {
+    if (caseRecord) {
+      setStatus("loaded");
+    } else {
+      axios
+        .get(`${GET_CASE_URL}/${params.id}`)
+        .then((res: AxiosResponse) => {
+          setCaseRecord(res.data);
+          setStatus(_.isEmpty(res.data) ? "empty" : "loaded");
+        })
+        .catch((error: AxiosError) => {
+          console.error(
+            `Error while fetching case by id ${params.id} : `,
+            error
+          );
+        });
+    }
+  }, [caseRecord]);
+
+  if (status === "loading") {
+    return (
+      <LoadingButton loading={true} variant="outlined" disabled>
+        disabled
+      </LoadingButton>
+    );
+  } else if (status === "empty") {
+    alert("Data not available. Moving back to cases");
+    navigate("/cases");
+  } else if (status === "loaded") {
     return (
       <CaseForm caseItem={caseRecord} configurations={props.configurations} />
     );
-  } else {
-    alert("Invalid Case Number");
-    navigate("/cases");
   }
 
   return <></>;

@@ -27,7 +27,7 @@ function App(props: any) {
           <Route path="/cases" element={<Case />} />
           <Route path="/cases/new" element={<CaseFormConnected />} />
           <Route
-            path="/cases/:caseNumber"
+            path="/cases/:id"
             element={<CaseFormRoutHandlerConnected />}
           />
           <Route path="/payquery" element={<PayQuery />} />
