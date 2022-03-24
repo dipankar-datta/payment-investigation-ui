@@ -75,7 +75,7 @@ function CaseForm(caseFormProps: any) {
     caseFormProps.caseItem || {}
   );
 
-  const submitHandler = () => {
+  const saveHandler = () => {
     axios
       .post(SAVE_CASE_URL, caseState)
       .then((res: any) => {
@@ -547,8 +547,8 @@ function CaseForm(caseFormProps: any) {
             display: caseFormProps.caseItem ? "none" : "",
           }}
         >
-          <Button onClick={submitHandler} variant="outlined" size="medium">
-            Submit
+          <Button onClick={saveHandler} variant="outlined" size="medium">
+            Save
           </Button>
         </div>
       </div>

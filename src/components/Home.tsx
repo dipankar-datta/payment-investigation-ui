@@ -14,7 +14,7 @@ export const Home = (props: any) => {
           Cases
         </Button>
         <Button onClick={e => navigate("/payquery")} variant="outlined" size="large">
-          Pay Query
+          Research
         </Button>
       </div>
     </Box>

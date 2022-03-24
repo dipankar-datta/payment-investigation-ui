@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { setConfigurations } from "./redux/actions";
 import { loadConfigurations } from "./util/api-calls";
-import { PayQuery } from "./components/pay-query/PayQuery";
+import { Research } from "./components/research/Research";
 import { Home } from "./components/Home";
 
 function App(props: any) {
@@ -30,7 +30,7 @@ function App(props: any) {
             path="/cases/:id"
             element={<CaseFormRoutHandlerConnected />}
           />
-          <Route path="/payquery" element={<PayQuery />} />
+          <Route path="/payquery" element={<Research />} />
           <Route path="*" element={<ComponentNone />} />
           <Route path="/" element={<Home />}></Route>
         </Routes>
