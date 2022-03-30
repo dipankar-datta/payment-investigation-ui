@@ -4,7 +4,7 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { PaymentResponse } from "../../types/types";
 
 const ResearchResponse = (props: { paymentResponse: PaymentResponse }) => {
@@ -24,20 +24,28 @@ const ResearchResponse = (props: { paymentResponse: PaymentResponse }) => {
         "& > :not(style)": { m: 2 },
       }}
     >
-      <TextField
-        id="caseBook"
-        label="Case Book"
-        size="small"
-        value={researchResponse.caseBook}
-        variant="standard"
-      />
-      <TextField
-        id="responseStatus"
-        label="Response Status"
-        size="small"
-        value={researchResponse.responseStatus}
-        variant="standard"
-      ></TextField>
+      <div style={{ marginTop: "85px" }}>
+        <TextField
+          id="caseBook"
+          label="Case Book"
+          size="small"
+          value={researchResponse.caseBook}
+          variant="standard"
+          style={{ marginRight: "20px" }}
+        />
+
+        <TextField
+          id="responseStatus"
+          label="Response Status"
+          size="small"
+          value={researchResponse.responseStatus}
+          variant="standard"
+          style={{ marginRight: "20px" }}
+        ></TextField>
+        <Button variant="outlined" size="large" >
+        Responses
+      </Button>
+      </div>
 
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>

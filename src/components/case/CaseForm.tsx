@@ -543,8 +543,7 @@ function CaseForm(caseFormProps: any) {
         <div
           style={{
             textAlign: "center",
-            margin: "20px 20px 10px 0",
-            display: caseFormProps.caseItem ? "none" : "",
+            margin: "20px 20px 10px 0"
           }}
         >
           <Button onClick={saveHandler} variant="outlined" size="medium">
