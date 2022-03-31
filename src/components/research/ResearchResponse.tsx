@@ -24,7 +24,7 @@ const ResearchResponse = (props: { paymentResponse: PaymentResponse }) => {
         "& > :not(style)": { m: 2 },
       }}
     >
-      <div style={{ marginTop: "85px" }}>
+      <div style={{ marginTop: "30px" }}>
         <TextField
           id="caseBook"
           label="Case Book"
@@ -42,9 +42,6 @@ const ResearchResponse = (props: { paymentResponse: PaymentResponse }) => {
           variant="standard"
           style={{ marginRight: "20px" }}
         ></TextField>
-        <Button variant="outlined" size="large" >
-        Responses
-      </Button>
       </div>
 
       <TabContext value={value}>
