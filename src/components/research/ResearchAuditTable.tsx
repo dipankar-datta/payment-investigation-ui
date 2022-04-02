@@ -51,7 +51,7 @@ const ResearchAuditTable = (props: any) => {
 
   return (
     <div>
-      <h2 style={{ margin: "0 0 10px 0" }}>Case List</h2>
+      <h2 style={{ margin: "0 0 10px 0" }}>Research Audit Log</h2>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         <TableContainer sx={{ maxHeight: 700 }}>
           <Table size="small" stickyHeader aria-label="sticky table">

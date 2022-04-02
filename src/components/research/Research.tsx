@@ -33,7 +33,7 @@ export const Research = (props: any) => {
   const loadAuditDetails = (auditDetails: any) => {
     setAuditResponseDetails(auditDetails);
     setScreen("auditdetails");
-  }
+  };
 
   return (
     <span style={{ textAlign: "center" }}>
@@ -65,14 +65,23 @@ export const Research = (props: any) => {
 
         {screen === "audittable" ? (
           <ResearchAudit
+            loadAuditDetails={loadAuditDetails}
             transactionReferenceNumber={payResponse?.transactionReferenceNumber}
           />
         ) : (
           <></>
         )}
 
-        {screen === "auditdetails" ? payResponse ? <ResearchResponse paymentResponse={payResponse} /> : <></> : <></>}
+        {screen === "auditdetails" ? (
+          payResponse ? (
+            <><Button variant="outlined" onClick={e => setScreen("audittable")}> Back to Research Audit Log </Button><ResearchResponse paymentResponse={payResponse} /></>
+          ) : (
+            <></>
+          )
+        ) : (
+          <></>
+        )}
       </div>
-    </span>
+    </span> 
   );
 };
