@@ -10,6 +10,8 @@ import { GET_CASE_URL, SAVE_CASE_URL } from "../../util/endpoints";
 import { connect } from "react-redux";
 import * as _ from "lodash";
 import LoadingButton from "@mui/lab/LoadingButton";
+import ResearchAudit from "../research/ResearchAudit";
+import ResearchResponse from "../research/ResearchResponse";
 
 const CaseFormRoutHandler = (props: any) => {
   const params = useParams();
@@ -19,6 +21,16 @@ const CaseFormRoutHandler = (props: any) => {
   );
   const [caseRecord, setCaseRecord]: any = useState(caseRecordFound);
   const [status, setStatus]: any = React.useState("loading");
+  const [auditResponseDetails, setAuditResponseDetails] = useState<any>();
+
+  const auditClickHandler = () => {
+    setStatus("audit");
+  }
+
+  const loadAuditDetails = (auditDetails: any) => {
+    setAuditResponseDetails(auditDetails);
+    setStatus("auditdetails");
+  };
 
   useEffect(() => {
     if (caseRecord) {
@@ -50,8 +62,12 @@ const CaseFormRoutHandler = (props: any) => {
     navigate("/cases");
   } else if (status === "loaded") {
     return (
-      <CaseForm caseItem={caseRecord} configurations={props.configurations} />
+      <CaseForm auditClickHandler={auditClickHandler} caseItem={caseRecord} configurations={props.configurations} />
     );
+  } else if (status === "audit") {
+    return <ResearchAudit auditByField="caseNumber" auditFieldValue={caseRecord.caseNumber} loadAuditDetails={loadAuditDetails} ></ResearchAudit>
+  } else if (status === "auditdetails") {
+    return <ResearchResponse paymentResponse={auditResponseDetails} />
   }
 
   return <></>;
@@ -93,6 +109,10 @@ function CaseForm(caseFormProps: any) {
     setCaseState({ ...caseState, ...data });
   };
 
+  const auditLogHandler = () => {
+    caseFormProps.auditClickHandler();
+  }
+
   return (
     <Box
       component="form"
@@ -109,6 +129,14 @@ function CaseForm(caseFormProps: any) {
             float: "right",
           }}
         >
+          <Button
+            onClick={auditLogHandler}
+            variant="outlined"
+            size="medium"
+            style={{marginRight: "20px"}}
+          >
+            Audit Log
+          </Button>
           <Button
             onClick={(e) => navigate("/cases")}
             variant="outlined"

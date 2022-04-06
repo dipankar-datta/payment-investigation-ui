@@ -7,17 +7,13 @@ import ResearchAuditTable from "./ResearchAuditTable";
 const ResearchAudit = (props: any) => {
   const [tableData, setTableData] = useState();
 
-  let transactionReferenceNumber = props.transactionReferenceNumber;
+  let auditFieldValue = props.auditFieldValue;
 
   useEffect(() => {
-    if (
-      transactionReferenceNumber !== props.transactionReferenceNumber ||
-      !tableData
-    ) {
+    if (auditFieldValue !== props.auditFieldValue || !tableData) {
+      const paymentAuditUrl = getPaymentAuditUrl(props.auditByField, props.auditFieldValue);
       axios
-        .get(
-          `${GET_PAYMENT_RESPONSE_URL}/${props.transactionReferenceNumber}/audit`
-        )
+        .get(paymentAuditUrl)
         .then((res: AxiosResponse) => {
           setTableData(res.data);
         })
@@ -27,6 +23,8 @@ const ResearchAudit = (props: any) => {
             err.message
           );
         });
+
+      auditFieldValue = props.auditByField;
     }
   });
 
@@ -39,3 +37,14 @@ const ResearchAudit = (props: any) => {
 };
 
 export default ResearchAudit;
+
+const getPaymentAuditUrl = (auditByField: string, fieldValue: string) => {
+  switch (auditByField) {
+    case "transactionReferenceNumber":
+      return `${GET_PAYMENT_RESPONSE_URL}/${fieldValue}/audit`;
+    case "caseNumber":
+      return `${GET_PAYMENT_RESPONSE_URL}/${fieldValue}/audit/bycase`;
+    default:
+      return "";
+  }
+};

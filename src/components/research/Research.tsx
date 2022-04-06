@@ -74,7 +74,16 @@ export const Research = (props: any) => {
 
         {screen === "auditdetails" ? (
           payResponse ? (
-            <><Button variant="outlined" onClick={e => setScreen("audittable")}> Back to Research Audit Log </Button><ResearchResponse paymentResponse={payResponse} /></>
+            <>
+              <Button
+                variant="outlined"
+                onClick={(e) => setScreen("audittable")}
+              >
+                {" "}
+                Back to Research Audit Log{" "}
+              </Button>
+              <ResearchResponse paymentResponse={payResponse} />
+            </>
           ) : (
             <></>
           )
@@ -82,6 +91,6 @@ export const Research = (props: any) => {
           <></>
         )}
       </div>
-    </span> 
+    </span>
   );
 };
