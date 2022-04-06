@@ -25,7 +25,7 @@ const CaseFormRoutHandler = (props: any) => {
 
   const auditClickHandler = () => {
     setStatus("audit");
-  }
+  };
 
   const loadAuditDetails = (auditDetails: any) => {
     setAuditResponseDetails(auditDetails);
@@ -62,12 +62,42 @@ const CaseFormRoutHandler = (props: any) => {
     navigate("/cases");
   } else if (status === "loaded") {
     return (
-      <CaseForm auditClickHandler={auditClickHandler} caseItem={caseRecord} configurations={props.configurations} />
+      <CaseForm
+        auditClickHandler={auditClickHandler}
+        caseItem={caseRecord}
+        configurations={props.configurations}
+      />
     );
   } else if (status === "audit") {
-    return <ResearchAudit auditByField="caseNumber" auditFieldValue={caseRecord.caseNumber} loadAuditDetails={loadAuditDetails} ></ResearchAudit>
+    return (
+      <>
+      <Button
+          onClick={(e) => setStatus("loaded")}
+          variant="outlined"
+          size="large"
+          style={{ float: "right" }}
+        >
+          Back to Case
+        </Button><ResearchAudit
+        auditByField="caseNumber"
+        auditFieldValue={caseRecord.caseNumber}
+        loadAuditDetails={loadAuditDetails}
+      ></ResearchAudit></>
+    );
   } else if (status === "auditdetails") {
-    return <ResearchResponse paymentResponse={auditResponseDetails} />
+    return (
+      <>
+        <Button
+          onClick={(e) => setStatus("audit")}
+          variant="outlined"
+          size="large"
+          style={{ float: "right" }}
+        >
+          Back to Audit Log
+        </Button>
+        <ResearchResponse paymentResponse={auditResponseDetails} />
+      </>
+    );
   }
 
   return <></>;
@@ -111,7 +141,7 @@ function CaseForm(caseFormProps: any) {
 
   const auditLogHandler = () => {
     caseFormProps.auditClickHandler();
-  }
+  };
 
   return (
     <Box
@@ -133,7 +163,7 @@ function CaseForm(caseFormProps: any) {
             onClick={auditLogHandler}
             variant="outlined"
             size="medium"
-            style={{marginRight: "20px"}}
+            style={{ marginRight: "20px" }}
           >
             Audit Log
           </Button>
@@ -571,7 +601,7 @@ function CaseForm(caseFormProps: any) {
         <div
           style={{
             textAlign: "center",
-            margin: "20px 20px 10px 0"
+            margin: "20px 20px 10px 0",
           }}
         >
           <Button onClick={saveHandler} variant="outlined" size="medium">
