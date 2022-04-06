@@ -65,8 +65,9 @@ export const Research = (props: any) => {
 
         {screen === "audittable" ? (
           <ResearchAudit
+            auditByField="transactionReferenceNumber"
+            auditFieldValue={payResponse?.transactionReferenceNumber}
             loadAuditDetails={loadAuditDetails}
-            transactionReferenceNumber={payResponse?.transactionReferenceNumber}
           />
         ) : (
           <></>
