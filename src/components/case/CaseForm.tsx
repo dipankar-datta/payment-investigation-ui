@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import { Button, MenuItem } from "@mui/material";
+import { Button, MenuItem, Modal, Box, TextField } from "@mui/material";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { DatePicker, LocalizationProvider } from "@mui/lab";
 import { useNavigate, useParams } from "react-router-dom";
@@ -12,6 +10,8 @@ import * as _ from "lodash";
 import LoadingButton from "@mui/lab/LoadingButton";
 import ResearchAudit from "../research/ResearchAudit";
 import ResearchResponse from "../research/ResearchResponse";
+import Correspondence from "../correspondence/Correspondence";
+import CloseIcon from "@mui/icons-material/Close";
 
 const CaseFormRoutHandler = (props: any) => {
   const params = useParams();
@@ -71,18 +71,20 @@ const CaseFormRoutHandler = (props: any) => {
   } else if (status === "audit") {
     return (
       <>
-      <Button
+        <Button
           onClick={(e) => setStatus("loaded")}
           variant="outlined"
           size="large"
           style={{ float: "right" }}
         >
           Back to Case
-        </Button><ResearchAudit
-        auditByField="caseNumber"
-        auditFieldValue={caseRecord.caseNumber}
-        loadAuditDetails={loadAuditDetails}
-      ></ResearchAudit></>
+        </Button>
+        <ResearchAudit
+          auditByField="caseNumber"
+          auditFieldValue={caseRecord.caseNumber}
+          loadAuditDetails={loadAuditDetails}
+        ></ResearchAudit>
+      </>
     );
   } else if (status === "auditdetails") {
     return (
@@ -120,6 +122,7 @@ function CaseForm(caseFormProps: any) {
   const [caseState, setCaseState] = React.useState(
     caseFormProps.caseItem || {}
   );
+  const [correspondenceOpen, setCorrespondenceOpen] = React.useState(false);
 
   const saveHandler = () => {
     axios
@@ -143,6 +146,19 @@ function CaseForm(caseFormProps: any) {
     caseFormProps.auditClickHandler();
   };
 
+  const style = {
+    position: "absolute" as "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "70%",
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    px: 4,
+    pb: 3,
+  };
+
   return (
     <Box
       component="form"
@@ -159,6 +175,35 @@ function CaseForm(caseFormProps: any) {
             float: "right",
           }}
         >
+          <Button
+            onClick={(e) => setCorrespondenceOpen(true)}
+            variant="outlined"
+            size="medium"
+            style={{ marginRight: "20px" }}
+          >
+            Correspondence
+          </Button>
+          <Modal
+            open={correspondenceOpen}
+            onClose={(e) => setCorrespondenceOpen(false)}
+            aria-labelledby="parent-modal-title"
+            aria-describedby="parent-modal-description"
+          >
+            <Box sx={{ ...style, width: "80%", height: "80%" }}>
+              <h3 style={{ float: "left" }} id="parent-modal-title">
+                Correspondence
+              </h3>
+               <Button
+                onClick={(e) => setCorrespondenceOpen(false)}
+                variant="outlined"
+                size="medium"
+                style={{ float: "right", marginTop: "20px" }}
+              >
+                <CloseIcon />
+              </Button> 
+              <Correspondence caseNumber={caseState.caseNumber} />
+            </Box>
+          </Modal>
           <Button
             onClick={auditLogHandler}
             variant="outlined"
