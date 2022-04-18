@@ -34,6 +34,11 @@ const CorrespondenceTable = (props: any) => {
       label: "Message",
       minWidth: 200,
       valuePath: "message",
+      format: (data: any) => {
+        return data && data.message && data.message.length > 20
+          ? data.message.slice(0, 20) + "..."
+          : data?.message;
+      },
     },
   ];
 
@@ -50,6 +55,9 @@ const CorrespondenceTable = (props: any) => {
 
   const handleSelection = (column: any, row: any) => {
     console.log(column, row);
+    if (props.rowSelectionHandler) {
+      props.rowSelectionHandler(row);
+    }
   };
   return (
     <div>

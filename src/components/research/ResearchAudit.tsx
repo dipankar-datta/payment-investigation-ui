@@ -1,5 +1,4 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { table } from "console";
 import { useState, useEffect } from "react";
 import { GET_PAYMENT_RESPONSE_URL } from "../../util/endpoints";
 import ResearchAuditTable from "./ResearchAuditTable";

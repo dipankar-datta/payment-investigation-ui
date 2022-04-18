@@ -2,8 +2,6 @@ import { Button, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
 
-const ariaLabel = { "aria-label": "description" };
-
 export type ResearchFormProps = {
   doSearch: (searchText: string) => void;
 }

@@ -1,5 +1,5 @@
 import { Box, MenuItem, TextField, Button } from "@mui/material";
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import React from "react";
 import { connect } from "react-redux";
 import { SAVE_CORRESPONDENCE_URL } from "../../util/endpoints";

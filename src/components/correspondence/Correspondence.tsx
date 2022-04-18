@@ -1,10 +1,12 @@
 import { TabList, TabPanel, TabContext } from "@mui/lab";
-import { Box, Button, Tab } from "@mui/material";
+import { Box, Button, Modal, Tab } from "@mui/material";
 import axios, { AxiosResponse } from "axios";
 import React, { useEffect } from "react";
 import { GET_CORRESPONDENCE_URL } from "../../util/endpoints";
 import CorrespondenceForm from "./CorrespondenceForm";
 import CorrespondenceTable from "./CorrespondenceTable";
+import CloseIcon from "@mui/icons-material/Close";
+import { CorrespondenceModalForm } from "./CorrespondenceModalForm";
 
 export const Correspondence = (props: any) => {
   const style = {
@@ -13,6 +15,7 @@ export const Correspondence = (props: any) => {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: "100%",
+    bgcolor: "background.paper",
   };
 
   const [value, setValue] = React.useState("1");
@@ -20,6 +23,8 @@ export const Correspondence = (props: any) => {
     React.useState<any>([]);
   const [outboundCorrespondences, setOutboundCorrespondences] =
     React.useState<any>([]);
+  const [correspondenceOpen, setCorrespondenceOpen] = React.useState(false);
+  const [selectedRow, setSelectedRow] = React.useState({});
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -58,6 +63,11 @@ export const Correspondence = (props: any) => {
     }
   };
 
+  const rowSelectionHandler = (row: any) => {
+    setSelectedRow(row);
+    setCorrespondenceOpen(true);
+  };
+
   return (
     <>
       <Box sx={{ ...style, width: "95%", height: "85%" }}>
@@ -74,13 +84,42 @@ export const Correspondence = (props: any) => {
             />
           </TabPanel>
           <TabPanel value="2">
-            <CorrespondenceTable correspondences={outboundCorrespondences} />
+            <CorrespondenceTable
+              rowSelectionHandler={rowSelectionHandler}
+              correspondences={outboundCorrespondences}
+            />
           </TabPanel>
           <TabPanel value="3">
-            <CorrespondenceTable correspondences={inboundCorrespondences} />
+            <CorrespondenceTable
+              rowSelectionHandler={rowSelectionHandler}
+              correspondences={inboundCorrespondences}
+            />
           </TabPanel>
         </TabContext>
       </Box>
+      <Modal
+        open={correspondenceOpen}
+        onClose={(e) => setCorrespondenceOpen(false)}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+      >
+        <Box sx={{ ...style, width: "75%", height: "75%", padding: "20px" }}>
+          <h3 style={{ float: "left" }} id="parent-modal-title">
+            Correspondence
+          </h3>
+          <Button
+            onClick={(e) => setCorrespondenceOpen(false)}
+            variant="outlined"
+            size="medium"
+            style={{ float: "right", marginTop: "20px" }}
+          >
+            <CloseIcon />
+          </Button>
+          <div style={{marginTop: "80px"}}>
+            <CorrespondenceModalForm correspondence={selectedRow} />
+          </div>
+        </Box>
+      </Modal>
     </>
   );
 };

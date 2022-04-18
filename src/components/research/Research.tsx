@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import axios, { Axios, AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { useState } from "react";
 import { PaymentResponse } from "../../types/types";
 import { GET_PAYMENT_RESPONSE_URL } from "../../util/endpoints";
@@ -12,7 +12,6 @@ export const Research = (props: any) => {
   const [screen, setScreen] = useState<
     "searchform" | "audittable" | "auditdetails"
   >("searchform");
-  const [paymentsAuditLog, setPaymentsAuditLog] = useState<any>();
   const [auditResponseDetails, setAuditResponseDetails] = useState<any>();
 
   const searchFunction = (searchText: string) => {
