@@ -14,6 +14,7 @@ import { setConfigurations } from "./redux/actions";
 import { loadConfigurations } from "./util/api-calls";
 import { Research } from "./components/research/Research";
 import { Home } from "./components/Home";
+import { InboundCorrepondenceRoutHandler } from "./components/correspondence/InboundCorrespondenceForm";
 
 function App(props: any) {
   if (props && props.actions) {
@@ -31,6 +32,7 @@ function App(props: any) {
             element={<CaseFormRoutHandlerConnected />}
           />
           <Route path="/payquery" element={<Research />} />
+          <Route path="/inbound-correspondence" element={<InboundCorrepondenceRoutHandler />} />
           <Route path="*" element={<ComponentNone />} />
           <Route path="/" element={<Home />}></Route>
         </Routes>

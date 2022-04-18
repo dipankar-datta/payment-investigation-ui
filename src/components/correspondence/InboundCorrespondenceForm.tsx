@@ -1,41 +1,57 @@
-import { Box, Button, MenuItem, TextField } from "@mui/material";
-import axios, { AxiosResponse } from "axios";
+import { Box, MenuItem, TextField, Button } from "@mui/material";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import React from "react";
 import { connect } from "react-redux";
 import { SAVE_CORRESPONDENCE_URL } from "../../util/endpoints";
 
-const CorrespondenceForm = (props: any) => {
-  const [correspondence, setCorrespondence] = React.useState(
-    props.correspondence
-  );
+export const InboundCorrepondenceRoutHandler = (props: any) => {
+  let pwd = null;
+  if (props) {
+    pwd = window.prompt("Please enter password");
+  }
+  return pwd ? <InboundCorrepondenceConnected password={pwd} /> : <></>;
+};
 
+const InboundCorrepondence = (props: any) => {
+  const [correspondence, setCorrespondence] = React.useState<any>({});
+  const [adminPassword, setAdminPassowrd] = React.useState<any>(props.password);
   const updateCorrespondence = (data: any) => {
     setCorrespondence({ ...correspondence, ...data });
   };
 
   const submitHandler = () => {
-    if (!correspondence.correspondenceType) {
-      alert("Please enter Correspondence Type");
-      return;
-    } else if (!correspondence.message) {
-      alert("Please enter message");
-      return;
-    }
-    const finalData = {
-      ...correspondence,
-      inboundOutbound: "outbound",
-      casebook: props.caseNumber,
-    };
-    axios
-      .post(SAVE_CORRESPONDENCE_URL, finalData)
-      .then((res: AxiosResponse) => {
-        alert("Successfully sent correspondence");
-        props.formSaveHandler(res.data);
-        setCorrespondence({});
-      })
-      .catch((err) => {
-        alert("Error sending correspondence");
-      });
+      if (!correspondence.casebook) {
+          alert("Please enter casebook number");
+      } else if (!correspondence.correspondenceType) {
+          alert("Please enter Correspondence Type")
+      } else if (!correspondence.message) {
+          alert("Please enter message");
+      } else if (!adminPassword) {
+            alert("Please enter admin password");
+      } else {
+        const finalData = {
+            ...correspondence,
+            inboundOutbound: "inbound",
+            password: adminPassword
+          };
+          axios
+            .post(SAVE_CORRESPONDENCE_URL, finalData)
+            .then((res: AxiosResponse) => {
+              alert("Successfully sent correspondence");
+              setCorrespondence({});
+            })
+            .catch((err: any) => {
+                if (err.response.status === 401) {
+                    if (window.confirm("Invalid Access. Would you like to enter password again ? ")) {
+                        setAdminPassowrd(window.prompt("Please enter admin password."));
+                    }
+                } else {
+                    alert("Error sending correspondence");
+                }
+              
+            });
+      }
+    
   };
 
   return (
@@ -84,6 +100,7 @@ const CorrespondenceForm = (props: any) => {
           />
         </div>
       </Box>
+
       <Button
         onClick={submitHandler}
         variant="outlined"
@@ -99,13 +116,14 @@ const CorrespondenceForm = (props: any) => {
 const mapStateToProps = (state: any, ownProps: any): any => {
   return {
     configurations: state.configurations.staticConfigurations,
-    caseNumber: ownProps.caseNumber,
-    correspondence: ownProps.correspondence,
-    formSaveHandler: ownProps.formSaveHandler,
+    password: ownProps.password,
   };
 };
 
-export default connect(mapStateToProps, null)(CorrespondenceForm);
+const InboundCorrepondenceConnected = connect(
+  mapStateToProps,
+  null
+)(InboundCorrepondence);
 
 const buildMenuItems = (option: any) => {
   return (

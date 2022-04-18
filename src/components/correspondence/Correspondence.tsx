@@ -1,5 +1,5 @@
 import { TabList, TabPanel, TabContext } from "@mui/lab";
-import { Box, Tab } from "@mui/material";
+import { Box, Button, Tab } from "@mui/material";
 import axios, { AxiosResponse } from "axios";
 import React, { useEffect } from "react";
 import { GET_CORRESPONDENCE_URL } from "../../util/endpoints";
@@ -54,7 +54,7 @@ export const Correspondence = (props: any) => {
     } else if (correspondence.inboundOutbound === "outbound") {
       const outboundCopy = [...outboundCorrespondences];
       outboundCopy.push(correspondence);
-      setInboundCorrespondences(correspondence);
+      setOutboundCorrespondences(outboundCopy);
     }
   };
 
@@ -64,8 +64,8 @@ export const Correspondence = (props: any) => {
         <TabContext value={value}>
           <TabList onChange={handleChange} aria-label="lab API tabs example">
             <Tab label="Send Inbound" value="1" />
-            <Tab label="Inbound" value="2" />
-            <Tab label="Outbound" value="3" />
+            <Tab label="Outbound" value="2" />
+            <Tab label="Inbound" value="3" />
           </TabList>
           <TabPanel value="1">
             <CorrespondenceForm
@@ -74,10 +74,10 @@ export const Correspondence = (props: any) => {
             />
           </TabPanel>
           <TabPanel value="2">
-            <CorrespondenceTable correspondences={inboundCorrespondences} />
+            <CorrespondenceTable correspondences={outboundCorrespondences} />
           </TabPanel>
           <TabPanel value="3">
-            <CorrespondenceTable correspondences={outboundCorrespondences} />
+            <CorrespondenceTable correspondences={inboundCorrespondences} />
           </TabPanel>
         </TabContext>
       </Box>

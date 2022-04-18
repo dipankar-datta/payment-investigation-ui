@@ -4,7 +4,7 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { PaymentResponse } from "../../types/types";
 
 const ResearchResponse = (props: { paymentResponse: PaymentResponse }) => {
