@@ -282,7 +282,7 @@ function CaseForm(caseFormProps: any) {
           <DatePicker
             label="Inquiry Date"
             value={caseState.inquiryDate || null}
-            onChange={(newValue) => {
+            onChange={(newValue: any) => {
               updateCase({ inquiryDate: newValue });
             }}
             renderInput={(params) => (
@@ -352,7 +352,7 @@ function CaseForm(caseFormProps: any) {
           <DatePicker
             label="Close Date"
             value={caseState.closeDate || null}
-            onChange={(newValue) => {
+            onChange={(newValue: any) => {
               updateCase({ closeDate: newValue });
             }}
             renderInput={(params) => (
@@ -371,7 +371,7 @@ function CaseForm(caseFormProps: any) {
           <DatePicker
             label="Post Date"
             value={caseState.postDate || null}
-            onChange={(newValue) => {
+            onChange={(newValue: any) => {
               updateCase({ postDate: newValue });
             }}
             renderInput={(params) => (
@@ -403,7 +403,7 @@ function CaseForm(caseFormProps: any) {
           <DatePicker
             label="Value Date"
             value={caseState.valueDate || null}
-            onChange={(newValue) => {
+            onChange={(newValue: any) => {
               updateCase({ valueDate: newValue });
             }}
             renderInput={(params) => (
