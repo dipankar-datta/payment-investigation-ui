@@ -479,7 +479,7 @@ const ResearchResponse = (props: { paymentResponse: PaymentResponse }) => {
 
             <TextField
               id="swiftInCbaBic"
-              label="CBA BIC"
+              label="Our Bank BIC"
               size="small"
               value={researchResponse.swiftInCbaBic}
             ></TextField>
@@ -498,12 +498,12 @@ const ResearchResponse = (props: { paymentResponse: PaymentResponse }) => {
               value={researchResponse.swiftInStatus}
             ></TextField>
 
-            <TextField
+            {/* <TextField
               id="swiftInMsgSequence"
               label="Message Sequence"
               size="small"
               value={researchResponse.swiftInMsgSequence}
-            ></TextField>
+            ></TextField> */}
 
             <TextField
               id="swiftInDateTime"
