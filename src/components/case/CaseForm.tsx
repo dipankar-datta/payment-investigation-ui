@@ -132,7 +132,7 @@ function CaseForm(caseFormProps: any) {
         alert("Successfully saved case");
         navigate("/cases");
       })
-      .catch((error) => {
+      .catch((error: any) => {
         alert("Error while saving case");
         console.error("Error while saving case: ", error);
       });
@@ -285,7 +285,7 @@ function CaseForm(caseFormProps: any) {
             onChange={(newValue: any) => {
               updateCase({ inquiryDate: newValue });
             }}
-            renderInput={(params) => (
+            renderInput={(params: any) => (
               <TextField id="inquiryDate" size="small" {...params} />
             )}
           />
@@ -355,7 +355,7 @@ function CaseForm(caseFormProps: any) {
             onChange={(newValue: any) => {
               updateCase({ closeDate: newValue });
             }}
-            renderInput={(params) => (
+            renderInput={(params: any) => (
               <TextField id="closeDate" size="small" {...params} />
             )}
           />
@@ -374,7 +374,7 @@ function CaseForm(caseFormProps: any) {
             onChange={(newValue: any) => {
               updateCase({ postDate: newValue });
             }}
-            renderInput={(params) => (
+            renderInput={(params: any) => (
               <TextField id="postDate" size="small" {...params} />
             )}
           />
@@ -406,7 +406,7 @@ function CaseForm(caseFormProps: any) {
             onChange={(newValue: any) => {
               updateCase({ valueDate: newValue });
             }}
-            renderInput={(params) => (
+            renderInput={(params: any) => (
               <TextField id="valueDate" size="small" {...params} />
             )}
           />
